@@ -1,4 +1,4 @@
-package com.backbase.recruitment.domains;
+package com.backbase.recruitment.domain;
 
 import lombok.*;
 
@@ -24,24 +24,21 @@ public class AcademyAward implements Serializable {
     @Setter(AccessLevel.NONE)
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_generator")
-    @SequenceGenerator(name = "seq_generator", sequenceName = "my_seq", allocationSize = 100)
+    @SequenceGenerator(name = "seq_generator", sequenceName = "my_seq", allocationSize = 1)
     @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
     @Size(min = 4, max = 25)
-    @NotBlank
-    @NotEmpty
+    @NotBlank @NotEmpty
     @Column(name = "year", nullable = false)
     private String year;
 
     @Size(max = 255)
-    @NotEmpty
-    @NotBlank
+    @NotEmpty @NotBlank
     @Column(name = "category", nullable = false)
     private String category;
 
-    @NotBlank
-    @NotEmpty
+    @NotBlank @NotEmpty
     @Column(name = "nominee", nullable = false)
     private String nominee;
 
@@ -49,9 +46,8 @@ public class AcademyAward implements Serializable {
     private String description;
 
     @Builder.Default
-    @Column(name = "is_win", nullable = false)
-    private boolean isWin = false;
-
+    @Column(name = "win", nullable = false)
+    private boolean win = false;
 
     @Override
     public boolean equals(Object o) {

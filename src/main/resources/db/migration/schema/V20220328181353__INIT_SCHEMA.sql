@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS academy_award (
     category VARCHAR(255) NOT NULL,
     nominee TEXT NOT NULL,
     description VARCHAR(255),
-    is_win BOOLEAN DEFAULT FALSE
+    win BOOLEAN DEFAULT FALSE
     );
 
-create index category__academy_award_idx on academy_award(category);
+create index academy_award_nominee_category_is_win_idx on academy_award(nominee,category,win);

@@ -12,5 +12,14 @@ services:
       TZ: Europe/Warsaw
     volumes:
       - postgres-data:/var/lib/postgresql/data
+
+  memcache:
+    container_name: memcache
+    image: memcached:1.5.20-alpine
+    ports:
+      - "11211:11211"
+    environment:
+      TZ: Europe/Warsaw
+
 volumes:
   postgres-data:

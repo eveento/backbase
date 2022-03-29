@@ -1,12 +1,15 @@
 package com.backbase.recruitment.rest.exeptions;
 
 import com.backbase.recruitment.utils.DateTimeUtils;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.server.ResponseStatusException;
 import org.zalando.problem.DefaultProblem;
 import org.zalando.problem.Problem;
 import org.zalando.problem.ProblemBuilder;
@@ -15,6 +18,7 @@ import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
 import javax.annotation.Nullable;
+import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -75,6 +79,15 @@ public class GlobalExceptionHandler implements ProblemHandling {
         Problem problem = Problem.builder()
                 .withTitle("Element not found")
                 .withStatus(Status.NOT_FOUND)
+                .with(MESSAGE, exception.getMessage())
+                .build();
+        return create(exception, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleConstraintViolationException(DataIntegrityViolationException exception, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+                .withStatus(Status.BAD_REQUEST)
                 .with(MESSAGE, exception.getMessage())
                 .build();
         return create(exception, problem, request);
