@@ -1,0 +1,2 @@
+in the CSV file, there were probably errors. I could not correctly parse it so I have decided to remove incorrect data. The Task description was so general and I decide to do it like I understood the task.
+Request to external api is limited so once per day I launch scheduler and cache selected data.
