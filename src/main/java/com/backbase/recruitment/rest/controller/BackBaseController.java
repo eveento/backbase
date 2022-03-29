@@ -8,10 +8,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.NotBlank;
@@ -19,7 +16,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalDouble;
 
 @Validated
 @Log4j2
@@ -43,5 +42,22 @@ public class BackBaseController {
         log.info("Getting top 10 movies");
         Collection<OmdbDTO> topTenRatedMovies = backBaseService.getTopTenRatedMovies();
         return ResponseEntity.ok(topTenRatedMovies);
+    }
+
+    @PostMapping("rate")
+    public ResponseEntity<AcademyAwardDTO> rateByTitle(@RequestParam("title") String title, @RequestParam("rate") double rate) {
+        var movie = backBaseService.rate(title, rate);
+        return movie.map(response -> ResponseEntity.ok().body(response))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, MessageFormat.format("Cannot rate {0}", title)));
+
+    }
+
+    @GetMapping("rate")
+    public ResponseEntity<Map<String, Double>> getRatioByTitle(@RequestParam("title") String title) {
+        OptionalDouble ration = backBaseService.getRationByTitle(title);
+        if (ration.isPresent()) {
+            return ResponseEntity.ok().body(Map.of("stars", ration.getAsDouble()));
+        }
+        return ResponseEntity.ok().body(Map.of("stars", (double) 0));
     }
 }

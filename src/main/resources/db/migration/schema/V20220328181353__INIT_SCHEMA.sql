@@ -10,3 +10,10 @@ CREATE TABLE IF NOT EXISTS academy_award (
     );
 
 create index academy_award_nominee_category_is_win_idx on academy_award(nominee,category,win);
+
+CREATE TABLE IF NOT EXISTS rating (
+    id INT PRIMARY KEY DEFAULT NEXTVAL('my_seq'),
+    rate DECIMAL,
+    academy_award_id INT,
+    CONSTRAINT fk_academy_award_id FOREIGN KEY (academy_award_id) REFERENCES academy_award(id)
+);

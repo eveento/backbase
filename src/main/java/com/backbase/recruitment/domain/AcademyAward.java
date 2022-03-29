@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -48,6 +49,9 @@ public class AcademyAward implements Serializable {
     @Builder.Default
     @Column(name = "win", nullable = false)
     private boolean win = false;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "academyAward")
+    private Set<Rating> rates;
 
     @Override
     public boolean equals(Object o) {

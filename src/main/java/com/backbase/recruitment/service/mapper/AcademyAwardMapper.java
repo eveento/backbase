@@ -14,6 +14,7 @@ import java.util.Collection;
 public interface AcademyAwardMapper extends EntityMapper<AcademyAwardDTO, AcademyAward> {
     @Override
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "rates", ignore = true)
     AcademyAward toEntity(AcademyAwardDTO dto);
 
     @Override
